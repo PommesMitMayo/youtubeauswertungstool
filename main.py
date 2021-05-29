@@ -110,7 +110,7 @@ def calculate_normalized(data_sets, xs_occurrence, use_max_percentage):
 
 
 def plot_charts(csv_file, x_axis_id, y_axis_id):
-    pp = pprint.PrettyPrinter(indent=4, width=400, sort_dicts=False)
+    pp = pprint.PrettyPrinter(indent=4, width=400)
 
     results = list(create_dict(csv_file).values())
     key_x_axis = get_key(x_axis_id, results[0])
