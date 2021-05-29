@@ -126,7 +126,7 @@ def plot_charts(csv_file, x_axis_id, y_axis_id, *options):
     calculate_normalized(data_sets, xs_occurrence, 'norm_percentage' in options)
 
     px = 1 / plt.rcParams['figure.dpi']
-    fig, ax = plt.subplots(figsize=(1920 * px, 1080 * px))
+    fig, ax = plt.subplots(figsize=(1366 * px, 768 * px))
     fig.canvas.manager.set_window_title('_'.join([x_axis_id, y_axis_id, *options]))
 
     for x_location, data_set_key in zip(x_locations, xs):
