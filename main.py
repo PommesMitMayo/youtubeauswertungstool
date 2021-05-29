@@ -21,7 +21,7 @@ def create_dict(file_name):
     print('Filtering results without parental approval and duplicates')
     result_dict = {}
     for result in results:
-        timestamp = result.pop('Timestamp')
+        timestamp = result.pop('Timestamp') if 'Timestamp' in result else result.pop('Zeitstempel')
         if 'keine' not in result.get(get_key('1', results[0])):
             valid = True
             for key, valid_result in result_dict.items():
