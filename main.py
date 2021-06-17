@@ -2,6 +2,12 @@ import sys
 import csv
 import pprint
 import matplotlib.pyplot as plt
+import itertools
+import glob
+import datetime
+import pathlib
+import os
+import shutil
 from wordcloud import WordCloud
 
 
@@ -109,10 +115,9 @@ def calculate_normalized(data_sets, xs_occurrence, use_max_percentage):
                     data_sets[data_set_key][y_key], data_sets[data_set_key][y_key] * maximum / data_set_max)
 
 
-def plot_charts(csv_file, x_axis_id, y_axis_id):
+def plot_charts(results, x_axis_id, y_axis_id):
     pp = pprint.PrettyPrinter(indent=4, width=400)
 
-    results = list(create_dict(csv_file).values())
     key_x_axis = get_key(x_axis_id, results[0])
     key_y_axis = get_key(y_axis_id, results[0])
     data_sets, xs_occurrence, unsorted_ys = generate_data_sets(key_x_axis, key_y_axis, results)
@@ -192,13 +197,32 @@ def filter_csv(csv_file):
 
 
 if __name__ == '__main__':
-    operation = input('Choose operation (plot|word_cloud) --> ')
+    operation = input('Choose operation (plot|word_cloud|plot_all) --> ')
+
     if operation == 'plot':
         x_axis_id = input('Choose X-Axis question identifier --> ')
         y_axis_id = input('Choose Y-Axis question identifier --> ')
-        plot_charts(sys.argv[1], x_axis_id, y_axis_id)
+        plot_charts(list(create_dict(sys.argv[1]).values()), x_axis_id, y_axis_id)
+
     if operation == 'word_cloud':
         identifier = input('Choose question identifier --> ')
         print_all_words(sys.argv[1], identifier)
+
+    if operation == 'plot_all':
+        results = list(create_dict(sys.argv[1]).values())
+        all_questions = list(results[0].keys())
+        all_keys = list(map(lambda question: question.split('.')[0], all_questions))
+        for x, y in itertools.product(all_keys, all_keys):
+            plot_charts(results, x, y)
+        dirname = str(datetime.datetime.now()).split('.')[0]
+        this_path = pathlib.Path().absolute()
+        target_dir = os.path.join(this_path, dirname)
+        os.mkdir(target_dir)
+        for dir_or_file in os.listdir(this_path):
+            if dir_or_file.endswith('.png'):
+                shutil.move(os.path.join(this_path, dir_or_file), target_dir)
+        shutil.make_archive(target_dir, 'zip', target_dir)
+        shutil.rmtree(target_dir)
+
     if operation == 'filter':
         filter_csv(sys.argv[1])
