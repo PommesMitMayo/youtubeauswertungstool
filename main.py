@@ -7,6 +7,7 @@ import datetime
 import pathlib
 import os
 import shutil
+import gc
 from wordcloud import WordCloud
 
 
@@ -164,6 +165,11 @@ def plot_charts(results, x_axis_id, y_axis_id):
             [x_axis_id, y_axis_id, 'sorted_by_occurrence' if sort_y else 'custom_sorted']) + '.png'
         plt.savefig(created_file_name)
         print('Saved as ' + created_file_name)
+        fig.clf()
+        plt.close()
+        del bin_edges, binned_data, binned_data_text
+    del data_sets
+    gc.collect()
 
 
 def print_all_words(csv_file, question_id):
