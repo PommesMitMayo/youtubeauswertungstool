@@ -1,6 +1,5 @@
 import sys
 import csv
-import pprint
 import matplotlib.pyplot as plt
 import itertools
 import glob
@@ -116,12 +115,9 @@ def calculate_normalized(data_sets, xs_occurrence, use_max_percentage):
 
 
 def plot_charts(results, x_axis_id, y_axis_id):
-    pp = pprint.PrettyPrinter(indent=4, width=400)
-
     key_x_axis = get_key(x_axis_id, results[0])
     key_y_axis = get_key(y_axis_id, results[0])
     data_sets, xs_occurrence, unsorted_ys = generate_data_sets(key_x_axis, key_y_axis, results)
-    pp.pprint(data_sets)
     calculate_normalized(data_sets, xs_occurrence, True)
     x_locations = get_x_locations(data_sets, True)
 
